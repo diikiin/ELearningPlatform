@@ -8,28 +8,20 @@ services:
       POSTGRES_USER: elearn
       POSTGRES_PASSWORD: nraele
     volumes:
-      - db_data:/var/libs/postgresql/data
+      - db_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     networks:
       - django_network
 
-  redis:
-    image: redis:alpine
-    ports:
-      - "6379:6379"
-
   django:
     build: .
     volumes:
       - .:/app
-      - static_files:/app/static
-      - uploaded_files:/app/upload
     ports:
       - "8000:8000"
     depends_on:
       - db
-      - redis
     environment:
       DB_NAME: e-learn
       DB_USER: elearn
@@ -41,8 +33,6 @@ services:
 
 volumes:
   db_data:
-  static_files:
-  uploaded_files:
 
 networks:
   django_network:
